@@ -131,4 +131,5 @@ dmypy.json
 .pyre/
 
 Datasets/
+Models/
 *.tmp
