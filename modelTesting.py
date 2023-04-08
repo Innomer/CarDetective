@@ -59,18 +59,18 @@ def feature_engineering(df):
     df['Engine'] = norm(df["Engine"])
     df['Power'] = norm(df["Power"])
     df['Mileage'] = norm(df["Mileage"])
-    # df['Price_Drop']=df['New_Price']-df['Price']
-    # df['Price']=norm(df["Price"])
-    # df['Price_Drop']=norm(df["Price_Drop"])
+    df['Price_Drop']=df['New_Price']-df['Price']
+    df['Price']=norm(df["Price"])
+    df['Price_Drop']=norm(df["Price_Drop"])
     df['New_Price'] = norm(df["New_Price"])
     df['Fuel_Type'] = df['Fuel_Type_Encoded']
     df['Owner_Type'] = df['Owner_Type_Encoded']
     df['Transmission'] = df['Transmission_Encoded']
     df['Name'] = df['Name'].str.extract('(\w+)')
     df['Name'] = df['Name'].astype('category').cat.codes
-    # df.drop(['Transmission_Encoded','Owner_Type_Encoded','Fuel_Type_Encoded','Location','New_Price','Price','Year'],axis=1,inplace=True)
-    df.drop(['Transmission_Encoded', 'Owner_Type_Encoded',
-            'Fuel_Type_Encoded', 'Location', 'Year'], axis=1, inplace=True)
+    df.drop(['Transmission_Encoded','Owner_Type_Encoded','Fuel_Type_Encoded','Location','New_Price','Price','Year'],axis=1,inplace=True)
+    # df.drop(['Transmission_Encoded', 'Owner_Type_Encoded',
+    #         'Fuel_Type_Encoded', 'Location', 'Year'], axis=1, inplace=True)
     return df
 
 
@@ -100,8 +100,10 @@ testdf = preprocess(pd.read_csv('./Datasets/test_data.csv'))
 testdf = test_features(testdf)
 
 
-X = traindf.drop('Price', axis=1)
-y = traindf['Price']
+# X = traindf.drop('Price', axis=1)
+# y = traindf['Price']
+X = traindf.drop('Price_Drop', axis=1)
+y = traindf['Price_Drop']
 
 X_train, X_test, y_train, y_test = train_test_split(
     X, y, test_size=0.2, random_state=42)
@@ -121,18 +123,18 @@ rfr_rmse = mean_squared_error(y_test, rfr_pred, squared=False)
 rfr_r2 = r2_score(y_test, rfr_pred)
 
 # SVM
-svr = SVR()
-svr.fit(X_train, y_train)
-svr_pred = svr.predict(X_test)
-svr_rmse = mean_squared_error(y_test, svr_pred, squared=False)
-svr_r2 = r2_score(y_test, svr_pred)
+# svr = SVR()
+# svr.fit(X_train, y_train)
+# svr_pred = svr.predict(X_test)
+# svr_rmse = mean_squared_error(y_test, svr_pred, squared=False)
+# svr_r2 = r2_score(y_test, svr_pred)
 
 print('Linear Regression RMSE:', lr_rmse)
 print('Linear Regression R^2:', lr_r2)
 print('Random Forest Regression RMSE:', rfr_rmse)
 print('Random Forest Regression R^2:', rfr_r2)
-print('Support Vector Regression RMSE:', svr_rmse)
-print('Support Vector Regression R^2:', svr_r2)
+# print('Support Vector Regression RMSE:', svr_rmse)
+# print('Support Vector Regression R^2:', svr_r2)
 
 # Price Drop Pred
 # Linear Regression RMSE: 0.06854988080410929
@@ -151,3 +153,10 @@ print('Support Vector Regression R^2:', svr_r2)
 # Support Vector Regression R^2: -0.00861005204204579
 
 # Therefore a Random Forest Regression is a better choice to calculate a price drop whereas a Linear Regression Model as well as Random Forest both are good at calculating new Prices but RF is slightly better.
+
+
+from joblib import dump
+# dump(lr, './Models/linear_regression_price.joblib')
+# dump(rfr, './Models/random_forest_price.joblib')
+dump(lr, './Models/linear_regression_drop.joblib')
+dump(rfr, './Models/random_forest_drop.joblib')
