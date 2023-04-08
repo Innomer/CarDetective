@@ -134,11 +134,20 @@ print('Random Forest Regression R^2:', rfr_r2)
 print('Support Vector Regression RMSE:', svr_rmse)
 print('Support Vector Regression R^2:', svr_r2)
 
+# Price Drop Pred
 # Linear Regression RMSE: 0.06854988080410929
 # Linear Regression R^2: 0.0007094859253358177
 # Random Forest Regression RMSE: 0.047372304163081906
 # Random Forest Regression R^2: 0.5227703975083304
 # Support Vector Regression RMSE: 0.07531974990854874
 # Support Vector Regression R^2: -0.20641324201886424
+
+# Final Price Pred
+# Linear Regression RMSE: 6.182162793359798
+# Linear Regression R^2: 0.8060657719191427
+# Random Forest Regression RMSE: 3.2735414592396417
+# Random Forest Regression R^2: 0.9456237463209227
+# Support Vector Regression RMSE: 14.09856302734958
+# Support Vector Regression R^2: -0.00861005204204579
 
 # Therefore a Random Forest Regression is a better choice to calculate a price drop whereas a Linear Regression Model as well as Random Forest both are good at calculating new Prices but RF is slightly better.
